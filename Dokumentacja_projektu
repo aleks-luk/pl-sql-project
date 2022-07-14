@@ -1,0 +1,70 @@
+1. Do poprawnego działania bazy zalecane jest użycie skryptów w następującej kolejności:
+	- create.sql
+	- insert.sql
+	- update.sql
+	- procedury.sql
+	- pakiet PLSQL.sql
+	- jobs.sql
+	- wyzwalacze.sql
+	Po poprawnym wykonaniu poleceń można zaczynać pracę z bazą danych. 
+
+2. Struktura projektu:
+	Plik create.sql - zawiera wywołania CREATE tworzące tabele i sekwencje używane w projekcie. Zawiera również wywołania CREATE tworzące widok.
+	Plik insert.sql - zawiera wywołania INSERT wypełniające tabele.
+	Plik update.sql - zawiera wywołania UPDATE modyfikujące pola w tabelach.
+	Plik procedury.sql - zawiera definicje procedur używanych w projekcie.
+	Plik pakiet PLSQL.sql - zawiera pakiet, który zawiera procedurę oraz funkcję.
+	Plik jobs.sql - zawiera zdefiniowane joby, oraz harmonogram.
+	Plik wyzwalacze.sql - zawiera definicje wyzwalaczy używanych w projekcie.
+	Plik wywolania.sql - zawiera wywołania procedur, funkcji oraz wyświetlanie widoku.
+
+	Dodatkowo projekt zawiera specyfikację, w której znajduję się zbiór wymagań i założeń dotyczących implementacji nowego modułu systemu w obszarze zarządzania kadrami i zamówieniami klientów.
+
+
+5. Struktura bazy
+	5.1. Tabele
+		COUNTRIES - Tabela ta zawiera kolumny: country_id, country_name, region_id.
+		CUSTOMER_ORDERS - Przechowuje dane o zamówieniach klienta, oraz statusie płatności. Tabela zawiera kolumny: order_id, order_date, customer_id, product_id, quantity, status. Wartości w kolumnie status to: NEW - zamówienie nowe, APPROVED - zatwierdzona płatność, INACTIVE - brak płatności.
+		CUSTOMERS - Przechowuje dane o klientach. Zawiera kolumny customer_id, first_name, last_name, is_company. Kolumna is_company oznacza czy klient jest pracownikiem firmy.
+		DEPARTMENTS - Przechowuje dane o oddziałach, w których pracują pracownicy. Tabela zawiera kolumny: department_id, department_name, manager_id, location_id.
+		EMPLOYEES - Przechowuje dane o pracownikach. Tabela zawiera kolumny: employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id, expire_date
+		JOB_HISTORY - Przechowuje dane o zmianach oddziału lub stanowiska przez pracownika. Tabela zawiera kolumny: employee_id, start_date, end_date, job_id, department_id.
+		JOB_LIMITS - Przechowuje dane o ilości dniach do zakończenia umówy na danym stanowisku. Tabela zawiera kolumny: id_limit, job_id, days_left
+		JOBS - Przechowuje dane o nazwie stanowisku oraz widełkach płacowych. Zawiera kolumny: job_id, job_title, min_salary, max_salary
+		LOCATIONS - Przechowuje dane o adresach poszczególnych budynkach należących do firmy. Nie przechowuje danych zamieszkania klientów. Tabela ta zawiera kolumny: location_id, street_adress, postal_code, city, state_province, country_id
+		ORDER_PAYMENTS - Przechowuje dane o płatnościach. Tabela zawiera kolumny: paymnet_id, payment_date, order_id, status. 
+		PRODUCTS - Przechowuje dane o produktach. Zawiera kolumny: product_id, product_name, status, price
+		REGIONS - Przechowuje numer regionu oraz jego nazwę: region_id, region_name
+		EMPLOYEES_TO_TALK - Tabela stworzona na potrzebę procedury GENERATE_EMP_TO_TALK, przechowuje informacje o pracownikach oraz ilość dni do końca umowy.
+
+6. Widok
+	6.1. Widok EMP_DETAILS_VIEW
+		Łączy w sobie  szczegółowe dane o pracownikach. 
+		Przykładowe zapytanie do widoku: 
+		SELECT * FROM EMP_DETAILS_VIEW;
+
+7. Procedury 
+	7.1. Procedura INVALIDATE_ORDERS
+		Mechanizm automatycznego oznaczania zamówień jako nieaktywne w przypadku braku zaakceptowanej płatności w terminie 8 dni od zamówienia. 
+
+	7.2. Procedura GENERATE_EMP_TO_TALK
+		Mechanizm generowania listy pracowników, którym umowa wygasa wcześniej niż zdefiniowane limity w tabeli job_limits.
+
+8. Pakiet PL/SQL 
+	8.1. Procedura INVALIDATE_ORDERS
+		Mechanizm automatycznego oznaczania zamówień jako nieaktywne w przypadku braku zaakceptowanej płatności w terminie 8 dni od zamówienia.
+
+9. Wyzwalacze
+	9.1. Wyzwalacz zmian w tabeli order_payments - AI_ORDER_PAYMENTS_TRG 
+		Wyzwalacz aktywowany po wprowadzeniu rekordu do tabeli order_payments ze statusem ‚APPROVED’	. Po wykonaniu operacji INSERT na tabeli order_payments, wyzwalacz wprowadza modyfikację rekordu w tabeli customer_orders. Przykładowe użycie wywołania  INSERT INTO order_payments(payment_id, payment_date, order_ID, status) VALUES (1, TO_DATE('2021-08-16', 'YYYY-MM-DD'), 1, 'PENDING');
+	      INSERT INTO order_payments(payment_id, payment_date, order_ID, status) VALUES (2, TO_DATE('2021-08-16', 'YYYY-MM-DD'), 1, 'APPROVED');
+
+	9.2. Wyzwalacz zmian w tabeli order_payments - BU_CUSTOMER_ORDER_TRG 
+		Wyzwalacz aktywowany w momencie wprowadzania zmian w tabeli customer_orders. Wyzwalacz ten uniemożliwia modyfikację rekordu ze statusem ‚INACTIVE’.
+
+10. Jobs 
+	10.1. Job  do uruchamiania procedury o nazwie INVALIDATE_ORDERS
+		Job ustawiony, aby podana wyżej procedura była wykonywana od poniedziałku do piątku o godzinie 14:30.
+
+	10.2. Job  do uruchamiania procedury o nazwie GENERATE_EMP_TO_TALK
+		Job ustawiony, aby podana wyżej procedura była wykonywana od poniedziałku do piątku o godzinie 14:30.
