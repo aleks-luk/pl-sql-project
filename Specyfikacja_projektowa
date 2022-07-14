@@ -1,0 +1,28 @@
+SPECYFIKACJA PROJEKTOWA
+
+Poniżej znajduje się zbiór wymagań i założeń dotyczących implementacji nowego modułu systemu  w obszarze zarządzania kadrami i zamówieniami klientów.
+W przyszłości projekt będzie rozwijany o nowe funkcjonalności, a także optymalizacja istniejącego kodu.
+
+Na etapie analizy biznesowej zdefiniowano konieczność utworzenia poniższych funkcjonalności:
+
+1. Mechanizm automatycznego zatwierdzania zamówienia klienta po dokonaniu płatności:
+
+Wyzwalacz : AI_ORDER_PAYMENTS_TRG.
+Wyzwalacz : BU_CSUTOMER_ORDERS_TRG.
+
+2. Mechanizm automatycznego oznaczania zamówień jako nieaktywne w przypadku braku zaakceptowanej płatności w terminie 8 dni od zamówienia. Dodatkowo automatyzacja mechanizmu.
+
+Procedura : INVALIDATE_ORDERS.
+Job: PROGRAM_OZNACZANIA_ZAMÓWIEŃ_NIEAKTYWNYCH.
+
+3. Stworzenie algorytmu liczącego detaliczną cenę produktu na podstawie historii jego sprzedaży. Jeśli towar został sprzedany 		w poprzednim miesiącu w ilości przekraczającej 500 to w kolejnym miesiącu jest cena powinna zostać podwyższona o 4%. 		Dodatkowo mechanizm, który pozwoli za pomocą parametru modyfikować ceny tych produktów.
+
+Pakiet PL/SQL: 
+
+Function GET_PRODUCT_PRICE (in_product_id IN products.product_id%TYPE, in_date IN date) RETURN products.price%TYPE. 
+Procedure UPDATE_PRODUCT_PRICE (in_product_id	 IN products.product_id%TYPE, in_date IN date, in_czy_modyfikowac_cene BOOLEAN)
+
+4. Mechanizm generowania listy pracowników, którym umowa wygasa wcześniej niż zdefiniowane limity w tabeli job_limits. Dodatkowo automatyzacja mechanizmu.
+
+Procedura : GENERATE_EMP_TO_TALK.
+Job: PROGRAM_GENEROWANIA_LISTY_PRACOWNIKÓW.
