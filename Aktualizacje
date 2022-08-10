@@ -1,0 +1,4 @@
+Aktualizacja data: 10.08.2022
+Zmieniono treść procedury update_product_price pakietu orders_pkg.
+Procedura została zooptymalizowana poprzez usunięcie podwójnej logiki funkcji i procedury.
+Aleksander Łukaszewski
