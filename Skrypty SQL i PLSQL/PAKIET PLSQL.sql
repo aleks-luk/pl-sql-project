@@ -50,37 +50,16 @@ IS
         v_limit_up 		NUMBER := 500;
         v_price_ind 	NUMBER := TO_NUMBER('0.04', '9.99');
     BEGIN
-      SELECT SUM(quantity)
-        INTO v_sum
-        FROM customer_orders
-       WHERE product_id = in_product_id
-         AND order_date BETWEEN LAST_DAY(ADD_MONTHS(in_date, -2))+1 AND LAST_DAY((ADD_MONTHS(in_date, -1)))
-        ;
-        
-        CASE WHEN v_sum > v_limit_up 
-        THEN
-            SELECT price *(1+v_price_ind)
-              INTO v_new_price
-              FROM products
-             WHERE product_id = in_product_id ;
-           
-          ELSE   
-            SELECT price
-              INTO v_new_price
-              FROM products
-             WHERE product_id = in_product_id;
-           END CASE;
-           
-      CASE WHEN in_czy_modyfikowac_cene = TRUE 
-        THEN
-        UPDATE products
-        SET price = v_new_price
-        WHERE product_id = in_product_id;
-        DBMS_OUTPUT.PUT_LINE('Sprzedaż produktu o ID = '||in_product_id||'  przekroczyła limit 500 i cena została podniesiona o 4 %. Nowa cena to '||v_new_price);
-        
-        ELSE
-        DBMS_OUTPUT.PUT_LINE('Detaliczna cena produktu o ID = '||in_product_id||' po podwyżce wynosiła by '||v_new_price);
-        END CASE;
+                    SELECT orders_pkg.get_product_price(in_product_id, TO_DATE('2022-01-02', 'YYYY-MM-DD'))
+                    INTO v_new_price
+                    FROM products
+                    WHERE product_id = in_product_id;
+
+UPDATE products
+SET price = v_new_price
+WHERE product_id = in_product_id;
+DBMS_OUTPUT.PUT_LINE('Sprzedaż produktu o ID = '||in_product_id||'  przekroczyła limit 500 i cena została podniesiona o 4 %. Nowa cena to '||v_new_price); 
+
    
     END update_product_price;
     END orders_pkg;
