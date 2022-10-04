@@ -2,7 +2,8 @@
 --Mechanizm automatycznego zatwierdzania zamówienia klienta po dokonaniu płatności. 
 
 
-DROP TRIGGER ai_order_payments_trg;	CREATE OR REPLACE TRIGGER ai_order_payments_trg
+DROP TRIGGER ai_order_payments_trg;	
+CREATE OR REPLACE TRIGGER ai_order_payments_trg
 	AFTER INSERT ON order_payments
 	FOR EACH ROW
 	WHEN (NEW.status = 'APPROVED')
