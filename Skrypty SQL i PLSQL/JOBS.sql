@@ -31,34 +31,3 @@ BEGIN
 END;
 /
 
--- JOB  do uruchamiania procedury o nazwie 'generate_emp_to_talk'
-
-BEGIN
-  DBMS_SCHEDULER.create_program (
-    program_name   => 'program_generowania_listy_pracowników',
-    program_type   => 'PLSQL_BLOCK',
-    program_action => 'BEGIN generate_emp_to_talk; END;',
-    enabled        => TRUE,
-    comments       => 'Mechanizm generowania listy pracowników, którym umowa wygasa wcześniej niż zdefiniowane limity w tabeli job_limits');
-END;
-/
-
-BEGIN
-  DBMS_SCHEDULER.create_schedule (
-    schedule_name   => 'harmonogram_dla_generowania_listy_pracowników_którym_umowa_wygasa',
-    start_date      => SYSTIMESTAMP,
-    repeat_interval => 'FREQ=DAILY; BYDAY=MON,TUE,WED,THU,FRI; BYHOUR=14; BYMINUTE=30;',
-    end_date        => NULL,
-    comments        => 'Powtarzany PN-PT o 14:30');    
-END;
-/
-
-BEGIN
-  DBMS_SCHEDULER.create_job (
-    job_name        => 'Koniec_umów_pracowników',
-    program_name    => 'program_generowania_listy_pracowników',
-    schedule_name   => 'harmonogram_dla_generowania_listy_pracowników_którym_umowa_wygasa',
-    enabled         => TRUE
-    );
-END;
-/
