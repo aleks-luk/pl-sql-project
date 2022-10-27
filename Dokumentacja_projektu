@@ -47,9 +47,6 @@
 	7.1. Procedura INVALIDATE_ORDERS
 		Mechanizm automatycznego oznaczania zamówień jako nieaktywne w przypadku braku zaakceptowanej płatności w terminie 8 dni od zamówienia. 
 
-	7.2. Procedura GENERATE_EMP_TO_TALK
-		Mechanizm generowania listy pracowników, którym umowa wygasa wcześniej niż zdefiniowane limity w tabeli job_limits.
-
 8. Pakiet PL/SQL 
 	8.1. Procedura INVALIDATE_ORDERS
 		Mechanizm automatycznego oznaczania zamówień jako nieaktywne w przypadku braku zaakceptowanej płatności w terminie 8 dni od zamówienia.
@@ -64,7 +61,4 @@
 
 10. Jobs 
 	10.1. Job  do uruchamiania procedury o nazwie INVALIDATE_ORDERS
-		Job ustawiony, aby podana wyżej procedura była wykonywana od poniedziałku do piątku o godzinie 14:30.
-
-	10.2. Job  do uruchamiania procedury o nazwie GENERATE_EMP_TO_TALK
 		Job ustawiony, aby podana wyżej procedura była wykonywana od poniedziałku do piątku o godzinie 14:30.
