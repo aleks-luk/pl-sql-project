@@ -2,3 +2,6 @@ Aktualizacja data: 10.08.2022
 Zmieniono treść procedury update_product_price pakietu orders_pkg.
 Procedura została zooptymalizowana poprzez usunięcie podwójnej logiki funkcji i procedury.
 Aleksander Łukaszewski
+Aktualizacja data: 27.10.2022
+Dodano obsługę wyjątków w przypadku podania nieprawidłowego parametru in_product_id w programie orders_pkg.
+Aleksander Łukaszewski
