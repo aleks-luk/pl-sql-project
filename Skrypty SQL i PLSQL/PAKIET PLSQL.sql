@@ -63,7 +63,9 @@ UPDATE products
 SET price = v_new_price
 WHERE product_id = in_product_id;
 DBMS_OUTPUT.PUT_LINE('Sprzedaż produktu o ID = '||in_product_id||'  przekroczyła limit 500 i cena została podniesiona o 4 %. Nowa cena to '||v_new_price); 
-
+EXCEPTION 
+   WHEN NO_DATA_FOUND 
+   THEN DBMS_OUTPUT.PUT_LINE('Podany id produktu : '||in_product_id||' nie istnieje. Podaj prawidłowy product_id');
    
     END update_product_price;
     END orders_pkg;
