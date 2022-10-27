@@ -58,6 +58,10 @@
 
 	9.2. Wyzwalacz zmian w tabeli order_payments - BU_CUSTOMER_ORDER_TRG 
 		Wyzwalacz aktywowany w momencie wprowadzania zmian w tabeli customer_orders. Wyzwalacz ten uniemożliwia modyfikację rekordu ze statusem ‚INACTIVE’.
+	
+	9.3. Wyzwalacz BIU_SALARY_VALIDATION sprawdzający czy wysokość wynagrodzenia pracownika mieści się w przedziale od 80% - 120% średniej wysokości wynagrodzenia w departamencie tylko, gdy w danym departamencie
+		pracuje więcej niż 5 osób. W przypadku, gdy w danym departamencie pracuje mniej niż 5 osób sprawdza czy wysokość wynagrodzenia pracownika mieści się w przedziale od 80% - 120% 
+		średniej wysokości wynagrodzenia wszystkich pracowników.
 
 10. Jobs 
 	10.1. Job  do uruchamiania procedury o nazwie INVALIDATE_ORDERS
