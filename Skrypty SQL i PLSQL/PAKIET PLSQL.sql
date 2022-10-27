@@ -38,6 +38,10 @@ FUNCTION get_product_price(in_product_id IN products.product_id%TYPE
         END IF;
         
         RETURN v_new_price;
+	EXCEPTION 
+          WHEN NO_DATA_FOUND 
+          THEN DBMS_OUTPUT.PUT_LINE('Podany id produktu : '||in_product_id||' nie istnieje. Podaj prawidłowy product_id');
+        RETURN v_new_price;
 END get_product_price;
 
 PROCEDURE update_product_price (in_product_id IN products.product_id%TYPE
