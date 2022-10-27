@@ -4,4 +4,5 @@ Procedura została zooptymalizowana poprzez usunięcie podwójnej logiki funkcji
 Aleksander Łukaszewski
 Aktualizacja data: 27.10.2022
 Dodano obsługę wyjątków w przypadku podania nieprawidłowego parametru in_product_id w programie orders_pkg.
+Dodano wyzwalacz sprawdzający wysokość pensji pracownika w przypadku dodania nowego pracowanika oraz modyfikacji.
 Aleksander Łukaszewski
